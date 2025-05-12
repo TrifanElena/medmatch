@@ -1,0 +1,6 @@
+<h2>Programează-te la o clinică</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Trimite programarea</button>
+</form>
