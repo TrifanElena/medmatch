@@ -63,15 +63,28 @@ Including another URLconf
 #     path('clinics/', include('clinics.urls')),
 # ]
 
+# from django.contrib import admin
+# from django.urls import path, include
+
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('users/', include('users.urls', namespace='users')),
+#     path('services/', include('services.urls', namespace='services')),
+#     path('clinics/', include('clinics.urls', namespace='clinics')),
+
+#     # trimite path-ul gol către homepage-ul din services
+#     path('', include('services.urls', namespace='services')),
+# ]
+
 from django.contrib import admin
 from django.urls import path, include
+from services import views as service_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls', namespace='users')),
-    path('services/', include('services.urls', namespace='services')),
-    path('clinics/', include('clinics.urls', namespace='clinics')),
-
-    # trimite path-ul gol către homepage-ul din services
-    path('', include('services.urls', namespace='services')),
+    path('services/', include(('services.urls', 'services'), namespace='services')),
+    path('clinics/', include(('clinics.urls', 'clinics'), namespace='clinics')),
+    path('users/', include(('users.urls', 'users'), namespace='users')),
+    path('', service_views.home, name='home'),  # homepage-ul tău personalizat
 ]
+

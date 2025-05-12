@@ -272,56 +272,171 @@
 
 
 
-from django.shortcuts import render
+# from django.shortcuts import render
+# from .forms import SymptomSelectionForm
+# from clinics.models import Clinic
+# from services.api import get_specialty_from_symptoms
+# from django.contrib.auth.decorators import login_required
+
+# @login_required
+# def symptom_checker(request):
+#     diagnosis = None
+#     recommended_specialty = None
+#     clinics = []
+
+#     if request.method == 'POST':
+#         form = SymptomSelectionForm(request.POST)
+#         if form.is_valid():
+#             selected_symptoms = form.cleaned_data['symptoms']
+#             print("📋 Simptome selectate:", selected_symptoms)
+
+#             # Obținem diagnosticul și specialitatea
+#             diagnosis, recommended_specialty = get_specialty_from_symptoms(selected_symptoms)
+#             print("✅ Diagnosticul returnat:", diagnosis)
+#             print("✅ Specialitate recomandată:", recommended_specialty)
+
+#             if request.user.is_authenticated and recommended_specialty:
+#                 user_city = getattr(request.user, 'city', None)
+#                 print(f"📍 Orașul utilizatorului: {user_city}")
+
+#                 if user_city:
+#                     clinics = Clinic.objects.filter(
+#                         specialties__name__iexact=recommended_specialty,
+#                         city__iexact=user_city
+#                     )
+#                 else:
+#                     clinics = Clinic.objects.filter(
+#                         specialties__name__iexact=recommended_specialty
+#                     )
+#             elif recommended_specialty:
+#                 clinics = Clinic.objects.filter(specialties__name__iexact=recommended_specialty)
+#     else:
+#         form = SymptomSelectionForm()
+
+#     return render(request, 'services/recommend_specialty.html', {
+#         'form': form,
+#         'diagnosis': diagnosis,
+#         'specialty': recommended_specialty,
+#         'clinics': clinics,
+#     })
+
+# def recommend_specialty(request):
+#     return render(request, 'services/recommend_specialty.html')
+
+# def home(request):
+#     return render(request, 'services/home.html')
+
+
+
+# from django.shortcuts import render
+# from django.contrib.auth.decorators import login_required
+# from .forms import SymptomSelectionForm
+# from clinics.models import Clinic
+# from services.api import get_specialty_from_symptoms  # funcție locală, fără API extern
+
+# @login_required
+# def symptom_checker(request):
+#     diagnosis = None
+#     recommended_specialty = None
+#     clinics = []
+
+#     if request.method == 'POST':
+#         form = SymptomSelectionForm(request.POST)
+#         if form.is_valid():
+#             selected_symptoms = form.cleaned_data['symptoms']
+#             print("📋 Simptome selectate:", selected_symptoms)
+
+#             # Obține diagnosticul + specialitatea
+#             diagnosis, recommended_specialty = get_specialty_from_symptoms(selected_symptoms)
+#             print("✅ Diagnosticul returnat:", diagnosis)
+#             print("✅ Specialitate recomandată:", recommended_specialty)
+
+#             if recommended_specialty:
+#                 if hasattr(request.user, 'city') and request.user.city:
+#                     print(f"📍 Oraș utilizator: {request.user.city}")
+#                     clinics = Clinic.objects.filter(
+#                         specialties__name__iexact=recommended_specialty,
+#                         city__iexact=request.user.city
+#                     )
+#                 else:
+#                     clinics = Clinic.objects.filter(specialties__name__iexact=recommended_specialty)
+#     else:
+#         form = SymptomSelectionForm()
+
+#     return render(request, 'services/recommend_specialty.html', {
+#         'form': form,
+#         'diagnosis': diagnosis,
+#         'specialty': recommended_specialty,
+#         'clinics': clinics,
+#     })
+
+# def recommend_specialty(request):
+#     return render(request, 'services/recommend_specialty.html')
+
+# def home(request):
+#     return render(request, 'services/home.html')
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .forms import SymptomSelectionForm
 from clinics.models import Clinic
 from services.api import get_specialty_from_symptoms
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def symptom_checker(request):
-    diagnosis = None
-    recommended_specialty = None
-    clinics = []
-
     if request.method == 'POST':
         form = SymptomSelectionForm(request.POST)
         if form.is_valid():
             selected_symptoms = form.cleaned_data['symptoms']
             print("📋 Simptome selectate:", selected_symptoms)
 
-            # Obținem diagnosticul și specialitatea
             diagnosis, recommended_specialty = get_specialty_from_symptoms(selected_symptoms)
             print("✅ Diagnosticul returnat:", diagnosis)
             print("✅ Specialitate recomandată:", recommended_specialty)
 
-            if request.user.is_authenticated and recommended_specialty:
+            clinics = []
+            if recommended_specialty:
                 user_city = getattr(request.user, 'city', None)
-                print(f"📍 Orașul utilizatorului: {user_city}")
-
                 if user_city:
                     clinics = Clinic.objects.filter(
                         specialties__name__iexact=recommended_specialty,
                         city__iexact=user_city
                     )
                 else:
-                    clinics = Clinic.objects.filter(
-                        specialties__name__iexact=recommended_specialty
-                    )
-            elif recommended_specialty:
-                clinics = Clinic.objects.filter(specialties__name__iexact=recommended_specialty)
+                    clinics = Clinic.objects.filter(specialties__name__iexact=recommended_specialty)
+
+            # ✅ Redirectăm către pagina de rezultate cu date în sesiune (sau le poți pasa ca query params)
+            request.session['diagnosis'] = diagnosis
+            request.session['recommended_specialty'] = recommended_specialty
+            request.session['selected_symptoms'] = selected_symptoms  # optional
+            return redirect('services:recommend_specialty')
     else:
         form = SymptomSelectionForm()
 
+    return render(request, 'services/symptom_checker.html', {'form': form})
+
+@login_required
+def recommend_specialty(request):
+    diagnosis = request.session.get('diagnosis')
+    recommended_specialty = request.session.get('recommended_specialty')
+
+    clinics = []
+    if recommended_specialty:
+        user_city = getattr(request.user, 'city', None)
+        if user_city:
+            clinics = Clinic.objects.filter(
+                specialties__name__iexact=recommended_specialty,
+                city__iexact=user_city
+            )
+        else:
+            clinics = Clinic.objects.filter(specialties__name__iexact=recommended_specialty)
+
     return render(request, 'services/recommend_specialty.html', {
-        'form': form,
         'diagnosis': diagnosis,
         'specialty': recommended_specialty,
         'clinics': clinics,
     })
-
-def recommend_specialty(request):
-    return render(request, 'services/recommend_specialty.html')
 
 def home(request):
     return render(request, 'services/home.html')
