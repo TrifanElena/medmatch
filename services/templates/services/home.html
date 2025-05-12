@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Bine ai venit!</title>
+</head>
+<body>
+    <h1>Bine ai venit pe MedMatch!</h1>
+    <p>Alege tipul tău de utilizator:</p>
+
+    <!-- <a href="{% url 'services:symptom_checker' %}">
+        <button>Sunt pacient</button>
+    </a> -->
+    
+    <a href="{% url 'users:choose' %}">
+        <button>Sunt pacient</button>
+    </a>
+    <a href="{% url 'users:logout' %}"><button>Deloghează-mă</button></a>
+    
+
+    <a href="/admin/">
+        <button>Sunt clinică</button>
+    </a>
+</body>
+</html>

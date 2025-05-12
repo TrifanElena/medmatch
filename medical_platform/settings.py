@@ -1,3 +1,7 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 """
 Django settings for medical_platform project.
 
@@ -10,7 +14,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +48,7 @@ INSTALLED_APPS = [
     'appointments',
     'services',
     'reviews',
+    'clinics',
     'recommendations',
 ]
 
@@ -85,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'medmatch',
         'USER': 'postgres',  # sau alt user, dacă l-ai definit
-        'PASSWORD': 'parola_ta_postgres',
+         'PASSWORD': 'elena',
         'HOST': 'localhost',
         'PORT': '5432',
     }

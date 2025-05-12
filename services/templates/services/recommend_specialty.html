@@ -1,0 +1,47 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recomandare</title>
+</head>
+<body>
+    <h1>Specialitate medicală recomandată</h1>
+    <p>Îți recomandăm să consulți specialitatea: <strong>{{ specialty }}</strong></p>
+    <a href="{% url 'services:symptom_checker' %}">Verifică alt simptom</a>
+</body>
+</html> -->
+<!-- services/templates/services/recommend_specialty.html -->
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Recomandare medicală</title>
+</head>
+<body>
+    <h1>Rezultatul analizei simptomelor</h1>
+
+    {% if specialty %}
+        {% if diagnosis %}
+            <p><strong>Diagnostic probabil:</strong> {{ diagnosis }}</p>
+        {% endif %}
+        <p><strong>Îți recomandăm să consulți secția de:</strong> {{ specialty }}</p>
+
+        {% if clinics %}
+            <h2>Clinici recomandate:</h2>
+            <ul>
+                {% for clinic in clinics %}
+                    <li>{{ clinic.name }} – {{ clinic.address }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p><em>Momentan nu există clinici asociate acestei specialități în baza de date.</em></p>
+        {% endif %}
+    {% else %}
+        <p><em>Nu am putut determina un diagnostic bazat pe simptomele alese.</em></p>
+    {% endif %}
+
+    <p><a href="{% url 'services:symptom_checker' %}">Înapoi la alegerea simptomelor</a></p>
+</body>
+</html>
+
+

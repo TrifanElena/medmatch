@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Alege autentificare</title>
+</head>
+<body>
+    <h2>Bun venit!</h2>
+    <p>Alege ce vrei să faci:</p>
+
+    <a href="{% url 'users:login' %}">
+        <button>Autentificare (Login)</button>
+    </a>
+
+    <a href="{% url 'users:register' %}">
+        <button>Creare cont (Sign up)</button>
+    </a>
+</body>
+</html>

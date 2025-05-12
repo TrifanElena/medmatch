@@ -1,0 +1,7 @@
+<!-- clinics/templates/clinics/clinic_list.html -->
+<h1>Lista clinicilor</h1>
+<ul>
+  {% for clinic in clinics %}
+    <li>{{ clinic.name }} - {{ clinic.city }}</li>
+  {% endfor %}
+</ul>
