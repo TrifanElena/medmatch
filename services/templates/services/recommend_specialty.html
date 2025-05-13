@@ -33,6 +33,7 @@
                     <li>{{ clinic.name }} – {{ clinic.address }}
                         <form method="get" action="{% url 'appointments:create' %}" style="display:inline;">
                             <input type="hidden" name="clinic_id" value="{{ clinic.id }}">
+                            <input type="hidden" name="specialty_id" value="{{ specialty.id }}">  <!-- Adaugă acest rând -->
                             <button type="submit">Programează-te aici</button>
                         </form>
                     </li>

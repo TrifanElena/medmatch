@@ -85,7 +85,6 @@ urlpatterns = [
     path('services/', include(('services.urls', 'services'), namespace='services')),
     path('clinics/', include(('clinics.urls', 'clinics'), namespace='clinics')),
     path('users/', include(('users.urls', 'users'), namespace='users')),
-    path('appointments/', include('appointments.urls', namespace='appointments')),
     path('appointments/', include(('appointments.urls', 'appointments'), namespace='appointments')),
     path('', service_views.home, name='home'),  # homepage-ul tău personalizat
 ]

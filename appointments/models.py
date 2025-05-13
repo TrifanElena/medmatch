@@ -1,10 +1,12 @@
 from django.db import models
 from django.conf import settings
 from clinics.models import Clinic
+from services.models import MedicalSpecialty
 
 class Appointment(models.Model):
     patient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
+    specialty = models.ForeignKey(MedicalSpecialty, on_delete=models.SET_NULL, null=True)
     date = models.DateField()
     time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
