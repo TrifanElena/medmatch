@@ -152,6 +152,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib import messages
+from clinics.models import Clinic
 
 def register_user(request):
     if request.method == 'POST':
@@ -182,9 +183,13 @@ def login_user(request):
     return render(request, 'users/login.html', {'form': form})
 
 
-def choose_user_type(request):
+def choose(request):
     return render(request, 'users/choose.html')
 
 def logout_user(request):
     logout(request)
     return redirect('users:login')
+
+def clinic_list(request):
+    clinics = Clinic.objects.all()
+    return render(request, 'users/clinic_list.html', {'clinics': clinics})

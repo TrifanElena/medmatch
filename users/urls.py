@@ -33,5 +33,6 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('login/', views.login_user, name='login'),  # <- schimbă 'login' în 'login_user'
     path('logout/', views.logout_user, name='logout'),
-    path('choose/', views.choose_user_type, name='choose'),  # opțional, dacă ai pagină de alegere tip
+    path('', views.clinic_list, name='clinic_list'),
+    path('choose/', views.choose, name='choose'),  # opțional, dacă ai pagină de alegere tip
 ]

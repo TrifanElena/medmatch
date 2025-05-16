@@ -6,5 +6,10 @@ app_name = 'clinics'
 
 urlpatterns = [
     # Exemplu placeholder – modifică ulterior dacă ai view-uri
-    path('', views.clinic_list, name='clinic_list'),
+    
+    path('register/', views.clinic_register, name='clinic_register'),
+    path('login/', views.clinic_login, name='clinic_login'),
+    path('dashboard/', views.clinic_dashboard, name='clinic_dashboard'),
+    path('clinics_choose/', views.clinics_choose, name='clinics_choose'),
+    
 ]
