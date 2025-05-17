@@ -23,7 +23,9 @@
         </style>
     </head>
 <body>
-    <h2>Bun venit!</h2>
+    <a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a>
+
+    <h2>Bun venit, dragă clinică!</h2>
     <p>Alege ce vrei să faci:</p>
 
     <a href="{% url 'clinics:clinic_login' %}">

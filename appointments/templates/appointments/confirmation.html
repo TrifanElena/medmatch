@@ -42,6 +42,7 @@
 </head>
 <body>
     <div class="confirmation-card">
+        <a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a>
         <h2 class="mb-4">Programare Confirmată</h2>
         <p><strong>Clinica:</strong> {{ clinic.name }}</p>
         <p><strong>Adresa:</strong> {{ clinic.address }}</p>
@@ -53,6 +54,8 @@
         <p><strong>Email clinică:</strong> {{ clinic_email }}</p>
         <hr>
         <a href="{% url 'services:symptom_checker' %}" class="btn btn-outline-primary">Evaluează alte simptome</a>
+        <a href="{% url 'appointments:create' %}?clinic_id={{ appointment.clinic.id }}&specialty_id={{ appointment.specialty.id }}" class="btn btn-secondary mt-3">Înapoi la programare</a>
+
     </div>
 </body>
 </html>

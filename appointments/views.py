@@ -3,6 +3,7 @@ from .forms import AppointmentForm
 from clinics.models import Clinic
 from services.models import MedicalSpecialty
 from .models import Appointment
+from datetime import date
 from django.contrib.auth.decorators import login_required
 
 # @login_required
@@ -42,6 +43,7 @@ from django.contrib.auth.decorators import login_required
 #         'clinic': clinic,
 #         'recommended_specialty': recommended_specialty,
 #     })
+
 @login_required
 def create_appointment(request):
     clinic_id = request.GET.get('clinic_id')
@@ -94,4 +96,12 @@ def appointment_confirmation(request, appointment_id):
         'specialty': appointment.specialty.name if appointment.specialty else "Nespecificată",
         'clinic_email': appointment.clinic.email if hasattr(appointment.clinic, 'email') else 'Email indisponibil',
         'diagnosis': diagnosis
+    })
+
+@login_required
+def my_appointments(request):
+    appointments = Appointment.objects.filter(patient=request.user).select_related('clinic', 'specialty')
+    return render(request, 'appointments/my_appointments.html', {
+        'appointments': appointments,
+        'today': date.today()
     })

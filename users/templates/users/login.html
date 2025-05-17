@@ -42,7 +42,8 @@
             }
         </style>
     </head>
-<body class="container mt-5">
+<body class="container mt-5"> <a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a>
+
     <h2>Autentificare</h2>
     <form method="post" novalidate>
         {% csrf_token %}

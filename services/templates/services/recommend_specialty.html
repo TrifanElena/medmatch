@@ -36,6 +36,12 @@
         </style>
     </head>
 <body>
+    <div class="recommend-buttons">
+        <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
+        <a href="{% url 'users:clinic_list' %}" class="btn btn-outline-primary">Vezi toate clinicile</a>
+        <a href="{% url 'services:symptom_checker' %}" class="btn btn-secondary">Înapoi la simptome</a>
+    </div>
+    
     <h1>Rezultatul analizei simptomelor</h1>
 
     {% if specialty %}

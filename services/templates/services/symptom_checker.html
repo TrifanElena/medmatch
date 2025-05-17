@@ -1,15 +1,114 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Symptom Checker</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Symptom checker</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <style>
+            body {
+                background-color: #f8f9fa;
+                margin-top: 40px;
+            }
+            .confirmation-card {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+            h2 {
+                color: #1c0270;
+            }
+        </style>
+        <style>
+            .btn-recommend {
+                background-color: #198754;
+                color: white;
+                font-size: 1.2rem;
+                padding: 10px 20px;
+                border-radius: 8px;
+                border: none;
+                margin-top: 20px;
+            }
+        
+            .symptom-columns {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px 40px;
+                max-width: 600px;
+            }
+        </style>
+        
+    </head>
 <body>
-    <h1>Check Your Symptoms</h1>
+    <a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a>
+    <a href="{% url 'users:clinic_list' %}" class="btn btn-outline-primary mb-3">Vezi toate clinicile</a>
+
+
+    <h1>Verifica simptomele</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Get Recommendation</button>
+        <div class="symptom-columns">
+            {% for field in form %}
+                <div class="form-check">
+                    {{ field }}
+                    <label class="form-check-label" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mt-3 d-flex gap-2">
+            <button type="submit" class="btn btn-success">Primește o recomandare</button>
+        </div>
+    </form>
+    
+    
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Verificare simptome</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .symptom-columns {
+            column-count: 2;
+            column-gap: 40px;
+        }
+        .form-check {
+            break-inside: avoid;
+        }
+        .btn-group-custom {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+    <h1 class="mb-4">Verifică simptomele</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="symptom-columns">
+            {% for field in form %}
+                <div class="form-check">
+                    {{ field }} {{ field.label_tag }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="btn-group-custom">
+            <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
+            <a href="{% url 'appointments:my_appointments' %}" class="btn btn-outline-primary">Vezi programările</a>
+            <button type="submit" class="btn btn-success">Primește o recomandare</button>
+        </div>
     </form>
 </body>
 </html>
+

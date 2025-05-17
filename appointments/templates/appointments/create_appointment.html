@@ -53,6 +53,7 @@
     </style>
 </head>
 <body>
+    <a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a>
     
         <h2 class="mb-4">Programează-te la o clinică</h2>
 
@@ -83,6 +84,8 @@
         {{ form.specialty.label_tag }} {{ form.specialty }}
     </div>
     <button type="submit" class="btn btn-primary">Trimite programarea</button>
+    <a href="{% url 'services:recommend' %}" class="btn btn-secondary mt-3">Înapoi la recomandare</a>
+
 </form>
 </body>
 </html>
