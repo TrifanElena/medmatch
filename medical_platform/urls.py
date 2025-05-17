@@ -86,6 +86,7 @@ urlpatterns = [
     path('clinics/', include(('clinics.urls', 'clinics'), namespace='clinics')),
     path('users/', include(('users.urls', 'users'), namespace='users')),
     path('appointments/', include(('appointments.urls', 'appointments'), namespace='appointments')),
-    path('', service_views.home, name='home'),  # homepage-ul tău personalizat
+    path('reviews/', include(('reviews.urls', 'reviews'), namespace='reviews')),
+    path('', service_views.home, name='home'),  
 ]
 

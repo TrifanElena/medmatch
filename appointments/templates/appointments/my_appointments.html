@@ -44,13 +44,19 @@
                         <td>{{ appointment.date }}</td>
                         <td>{{ appointment.time }}</td>
                         <td>
-                            {% if appointment.fulfilled %}
+                            <!-- {% if appointment.fulfilled %}
                                 Finalizată
                             {% elif appointment.date < today %}
                                 Expirată
                             {% else %}
                                 Programată
+                            {% endif %} -->
+                            {% if appointment.fulfilled and not appointment.review %}
+                                <a href="{% url 'reviews:leave_review' appointment.id %}" class="btn btn-sm btn-primary">Lasă o recenzie</a>
+                            {% elif appointment.review %}
+                                 <span class="text-success">Recenzie trimisă ✅</span>
                             {% endif %}
+
                         </td>
                     </tr>
                 {% endfor %}

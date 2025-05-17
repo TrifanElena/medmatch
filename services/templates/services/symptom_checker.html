@@ -97,8 +97,14 @@
         {% csrf_token %}
         <div class="symptom-columns">
             {% for field in form %}
-                <div class="form-check">
+                <!-- <div class="form-check">
                     {{ field }} {{ field.label_tag }}
+                </div> -->
+
+                <div class="form-check">
+                    <label class="form-check-label" for="{{ field.id_for_label }}">
+                        {{ field }} {{ field.label }}
+                    </label>
                 </div>
             {% endfor %}
         </div>
@@ -106,6 +112,8 @@
         <div class="btn-group-custom">
             <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
             <a href="{% url 'appointments:my_appointments' %}" class="btn btn-outline-primary">Vezi programările</a>
+            <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">Vezi recenzii</a>
+
             <button type="submit" class="btn btn-success">Primește o recomandare</button>
         </div>
     </form>
