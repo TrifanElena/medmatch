@@ -16,7 +16,8 @@
 </head>
 <body class="container mt-5">
     <h1 class="mb-4">Recenzii ale serviciilor medicale</h1>
-    <a href="{% url 'services:symptom_checker' %}" class="btn btn-secondary mb-4">Înapoi la simptome</a>
+    <a href="{{ back_url }}" class="btn btn-outline-secondary mb-3">Înapoi</a>
+
 
     {% for review in reviews %}
         <div class="review-card">

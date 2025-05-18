@@ -58,6 +58,16 @@ def leave_review(request, appointment_id):
     })
 
 
+# def reviews_list(request):
+#     reviews = Review.objects.select_related('appointment__clinic', 'appointment__specialty', 'appointment__patient').all().order_by('-created_at')
+#     return render(request, 'reviews/reviews_list.html', {'reviews': reviews})
+
 def reviews_list(request):
     reviews = Review.objects.select_related('appointment__clinic', 'appointment__specialty', 'appointment__patient').all().order_by('-created_at')
-    return render(request, 'reviews/reviews_list.html', {'reviews': reviews})
+    
+    previous_url = request.META.get('HTTP_REFERER', '/services/symptoms/')  # fallback: symptom_checker
+
+    return render(request, 'reviews/reviews_list.html', {
+        'reviews': reviews,
+        'back_url': previous_url
+    })
