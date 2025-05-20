@@ -62,5 +62,4 @@ class SymptomSelectionForm(forms.Form):
         choices=SYMPTOMS_CHOICES,
         widget=forms.CheckboxSelectMultiple,
         required=True,
-        label="Selectează simptomele"
     )

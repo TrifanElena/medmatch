@@ -88,35 +88,55 @@
             gap: 15px;
             flex-wrap: wrap;
         }
+        .disclaimer-box {
+            background-color: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            font-size: 0.9rem;
+            color: #555;
+        }
     </style>
 </head>
 <body class="container mt-5">
-    <h1 class="mb-4">Verifică simptomele</h1>
+    <div class="mb-4">
+        <p class="mb-4"><h1>Bună, {{ user.full_name }}!</h1></p>
+        <p class="text-muted mb-0">
+            Selectează din lista de mai jos unul sau mai multe simptome  
+            și noi vom încerca să îți dăm un diagnostic probabil.
+        </p>
+    </div>
+    <div class="disclaimer-box">
+        <strong>Disclaimer:</strong>  
+        Recomandările medicale și diagnosticile generate de aplicație  
+        nu sunt 100% precise și reflectă marja de eroare a API-ului Infermedica.  
+        Te rugăm să consulți întotdeauna un medic specialist înainte  
+        de a lua decizii importante legate de sănătatea ta.
+    </div>
+    <h4 class="mb-4">Verifică simptomele</h4>
 
     <form method="post">
         {% csrf_token %}
-        <div class="symptom-columns">
-            {% for field in form %}
-                <!-- <div class="form-check">
-                    {{ field }} {{ field.label_tag }}
-                </div> -->
-
-                <div class="form-check">
-                    <label class="form-check-label" for="{{ field.id_for_label }}">
-                        {{ field }} {{ field.label }}
-                    </label>
-                </div>
-            {% endfor %}
+        <div class="row">
+          {% for field in form.symptoms %}
+            <div class="col-6 form-check">
+              {{ field }} 
+              <label class="form-check-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+              </label>
+            </div>
+          {% endfor %}
         </div>
-
         <div class="btn-group-custom">
             <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
             <a href="{% url 'appointments:my_appointments' %}" class="btn btn-outline-primary">Vezi programările</a>
+            <a href="{% url 'users:clinic_list' %}" class="btn btn-outline-primary">Vezi toate clinicile</a>
             <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">Vezi recenzii</a>
-
+            <a href="{% url 'users:logout' %}" class="btn btn-primary"style="background-color:#0d3b66; border-color:#0d3b66;">Deloghează-mă</a>
             <button type="submit" class="btn btn-success">Primește o recomandare</button>
         </div>
-    </form>
+      </form>
+      
 </body>
 </html>
 
