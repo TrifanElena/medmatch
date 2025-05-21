@@ -5,12 +5,47 @@
     <meta charset="UTF-8">
     <title>Lasă o recenzie</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 2rem;
+        }
+        .confirmation-card {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .confirmation-card h2 {
+            color: #1c0270;
+            margin-bottom: 1.5rem;
+        }
+        .confirmation-card p.intro {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+    </style>
 </head>
 <body class="container mt-5">
-    <h2>Lasă o recenzie pentru {{ appointment.clinic.name }} – {{ appointment.specialty.name }}</h2>
+    <div class="confirmation-card">
+    <h2 class="text-center">Lasă o recenzie pentru {{ appointment.clinic.name }} – {{ appointment.specialty.name }}</h2>
+
+    <p class="intro text-center">
+        Recenziile tale ne ajută să ne îmbunătățim serviciile medicale.<br>
+        Te rugăm să fii sincer și politicos în exprimare.
+    </p>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        <div class="d-flex gap-2">
         <button type="submit" class="btn btn-success">Trimite recenzia</button>
         {% if messages %}
     <div class="alert alert-success mt-3">
@@ -19,9 +54,10 @@
         {% endfor %}
     </div>
 {% endif %}
-
+<a href="{% url 'reviews:list' %}" class="btn btn-outline-info">Vezi recenzii</a>
+</div>
     </form>
-    <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">Vezi recenzii</a>
-
+    <!-- <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">Vezi recenzii</a> -->
+</div>
 </body>
 </html>

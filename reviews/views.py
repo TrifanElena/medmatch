@@ -2,6 +2,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ReviewForm
 from .models import Review
+from .models import Clinic
+from clinics.models import Clinic
 from appointments.models import Appointment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -62,12 +64,44 @@ def leave_review(request, appointment_id):
 #     reviews = Review.objects.select_related('appointment__clinic', 'appointment__specialty', 'appointment__patient').all().order_by('-created_at')
 #     return render(request, 'reviews/reviews_list.html', {'reviews': reviews})
 
-def reviews_list(request):
-    reviews = Review.objects.select_related('appointment__clinic', 'appointment__specialty', 'appointment__patient').all().order_by('-created_at')
+# def reviews_list(request):
+#     reviews = Review.objects.select_related('appointment__clinic', 'appointment__specialty', 'appointment__patient').all().order_by('-created_at')
     
-    previous_url = request.META.get('HTTP_REFERER', '/services/symptoms/')  # fallback: symptom_checker
+#     previous_url = request.META.get('HTTP_REFERER', '/services/symptoms/')  # fallback: symptom_checker
 
-    return render(request, 'reviews/reviews_list.html', {
-        'reviews': reviews,
-        'back_url': previous_url
+#     return render(request, 'reviews/reviews_list.html', {
+#         'reviews': reviews,
+#         'back_url': previous_url
+#     })
+
+@login_required
+def reviews_list(request):
+    clinic_id = request.GET.get('clinic_id')
+    # preluăm toate recenziile, împreună cu relațiile necesare
+    qs = Review.objects.select_related(
+        'appointment__clinic',
+        'appointment__specialty',
+        'appointment__patient'
+    ).order_by('-created_at')
+
+    # dacă a fost dat clinic_id în URL, filtrăm
+    if clinic_id:
+        qs = qs.filter(appointment__clinic_id=clinic_id)
+
+    back_url = request.META.get('HTTP_REFERER', '/services/symptoms/')
+
+    return render(
+        request,
+        'reviews/reviews_list.html',
+        {
+            'reviews': qs,
+            'back_url': back_url
+        }
+    )
+
+def clinic_list(request):
+    # prefetchăm specializările pentru performanță
+    clinics = Clinic.objects.prefetch_related('specialties').all()
+    return render(request, 'clinics/clinic_list.html', {
+        'clinics': clinics
     })

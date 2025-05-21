@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'reviews',
     'clinics',
     'recommendations',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

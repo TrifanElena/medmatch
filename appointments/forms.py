@@ -125,8 +125,11 @@ class AppointmentForm(forms.ModelForm):
         model = Appointment
         fields = ['specialty', 'date', 'time']
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
-            'time': forms.TimeInput(attrs={'type': 'time'}),
+            # 'date': forms.DateInput(attrs={'type': 'date'}),
+            # 'time': forms.TimeInput(attrs={'type': 'time'}),
+            'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
+            'specialty': forms.Select(attrs={'class': 'form-select'}),
         }
 
     def __init__(self, *args, **kwargs):

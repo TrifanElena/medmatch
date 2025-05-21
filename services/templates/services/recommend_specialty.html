@@ -1,77 +1,72 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Recomandare</title>
-</head>
-<body>
-    <h1>Specialitate medicală recomandată</h1>
-    <p>Îți recomandăm să consulți specialitatea: <strong>{{ specialty }}</strong></p>
-    <a href="{% url 'services:symptom_checker' %}">Verifică alt simptom</a>
-</body>
-</html> -->
 <!-- services/templates/services/recommend_specialty.html -->
 <!DOCTYPE html>
 <html lang="ro">
-    <head>
-        <meta charset="UTF-8">
-        <title>Recomandare medicala</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <style>
-            body {
-                background-color: #f8f9fa;
-                margin-top: 40px;
-            }
-            .confirmation-card {
-                max-width: 600px;
-                margin: 0 auto;
-                background-color: white;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            }
-            h2 {
-                color: #1c0270;
-            }
-        </style>
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <title>Recomandare medicală</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .confirmation-card {
+      max-width: 600px;
+      margin: 3rem auto;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
 <body>
-    <div class="recommend-buttons">
-        <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
-        <a href="{% url 'users:clinic_list' %}" class="btn btn-outline-primary">Vezi toate clinicile</a>
-        <a href="{% url 'services:symptom_checker' %}" class="btn btn-secondary">Înapoi la simptome</a>
-    </div>
-    
-    <h1>Rezultatul analizei simptomelor</h1>
+  <div class="confirmation-card">
+    <h1 class="text-center mb-4">Rezultatul analizei simptomelor</h1>
 
     {% if specialty %}
-        {% if diagnosis %}
-            <p><strong>Diagnostic probabil:</strong> {{ diagnosis }}</p>
-        {% endif %}
-        <p><strong>Îți recomandăm să consulți secția de:</strong> {{ specialty }}</p>
+      {% if diagnosis %}
+        <p class="text-center mb-2">
+          <strong>Diagnostic probabil:</strong> {{ diagnosis }}
+        </p>
+      {% endif %}
+      <p class="text-center mb-4">
+        <strong>Îți recomandăm să consulți secția de:</strong> {{ specialty }}
+      </p>
 
-        {% if clinics %}
-            <h2>Clinici recomandate:</h2>
-            <ul>
-                {% for clinic in clinics %}
-                    <li>{{ clinic.name }} – {{ clinic.address }}
-                        <form method="get" action="{% url 'appointments:create' %}" style="display:inline;">
-                            <input type="hidden" name="clinic_id" value="{{ clinic.id }}">
-                            <input type="hidden" name="specialty_id" value="{{ specialty.id }}">  <!-- Adaugă acest rând -->
-                            <button type="submit">Programează-te aici</button>
-                        </form>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p><em>Momentan nu există clinici asociate acestei specialități în baza de date.</em></p>
-        {% endif %}
+      {% if clinics %}
+        <h2 class="text-center mb-3">Clinici recomandate:</h2>
+        <ul class="list-group mb-4">
+          {% for clinic in clinics %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ clinic.name }} – {{ clinic.address }}</span>
+              <form method="get" action="{% url 'appointments:create' %}">
+                <input type="hidden" name="clinic_id" value="{{ clinic.id }}">
+                <input type="hidden" name="specialty_id" value="{{ specialty.id }}">
+                <button type="submit" class="btn btn-success btn-sm">
+                  Programează-te aici
+                </button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-center text-muted mb-4">
+          <em>Momentan nu există clinici asociate acestei specialități.</em>
+        </p>
+      {% endif %}
+
     {% else %}
-        <p><em>Nu am putut determina un diagnostic bazat pe simptomele alese.</em></p>
+      <p class="text-center text-muted mb-4">
+        <em>Nu am putut determina un diagnostic pe baza simptomelor alese.</em>
+      </p>
     {% endif %}
 
-    <p><a href="{% url 'services:symptom_checker' %}">Înapoi la alegerea simptomelor</a></p>
+    <!-- butoanele în josul chenarului, centrate -->
+    <div class="d-flex justify-content-center gap-2">
+      <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
+      <a href="{% url 'users:clinic_list' %}" class="btn btn-outline-primary">Vezi toate clinicile</a>
+      <a href="{% url 'services:symptom_checker' %}" class="btn btn-secondary">Înapoi la simptome</a>
+    </div>
+  </div>
 </body>
 </html>
-
-

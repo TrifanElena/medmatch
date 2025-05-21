@@ -1,9 +1,45 @@
-<!-- clinics/templates/clinics/clinic_list.html -->
-<h1>Lista clinicilor</h1>
-<ul>
-  {% for clinic in clinics %}
-    <li>{{ clinic.name }} - {{ clinic.city }}</li>
-  {% endfor %}
-</ul>
-<a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a>
-
+{% load static %}
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste clinici</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body { background-color: #f8f9fa; padding: 2rem; }
+    .card { margin-bottom: 1.5rem; }
+    .badge-specialty { margin-right: 0.3rem; }
+  </style>
+</head>
+<body class="container">
+  <h1 class="mb-4 text-center">Clinici disponibile</h1>
+  <div class="row">
+    {% for clinic in clinics %}
+      <div class="col-12 col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ clinic.name }}</h5>
+            <p class="card-text">
+              <strong>Adresă:</strong> {{ clinic.address }}{% if clinic.city %}, {{ clinic.city }}{% endif %}
+            </p>
+            {% if clinic.specialties.all %}
+              <p>
+                <strong>Specializări:</strong><br>
+                {% for spec in clinic.specialties.all %}
+                  <span class="badge bg-primary badge-specialty">{{ spec.name }}</span>
+                {% endfor %}
+              </p>
+            {% endif %}
+            <a href="{% url 'reviews:reviews_list' %}?clinic_id={{ clinic.id }}" 
+               class="btn btn-outline-success mt-2">
+              Vezi recenzii
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>Nu există clinici de afișat.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>

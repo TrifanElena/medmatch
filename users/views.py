@@ -150,8 +150,10 @@
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib import messages
+from reviews.models import Review
 from clinics.models import Clinic
 
 def register_user(request):
@@ -193,3 +195,21 @@ def logout_user(request):
 def clinic_list(request):
     clinics = Clinic.objects.all()
     return render(request, 'users/clinic_list.html', {'clinics': clinics})
+
+@login_required
+def reviews_list(request):
+    qs = Review.objects.select_related(
+        'appointment__clinic',
+        'appointment__specialty',
+        'appointment__patient'
+    ).order_by('-created_at')
+
+    clinic_id = request.GET.get('clinic_id')
+    if clinic_id:
+        qs = qs.filter(appointment__clinic_id=clinic_id)
+
+    back_url = request.META.get('HTTP_REFERER', '/')
+    return render(request, 'reviews/reviews_list.html', {
+        'reviews': qs,
+        'back_url': back_url
+    })
