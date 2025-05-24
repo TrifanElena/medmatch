@@ -78,26 +78,41 @@ def leave_review(request, appointment_id):
 def reviews_list(request):
     clinic_id = request.GET.get('clinic_id')
     # preluăm toate recenziile, împreună cu relațiile necesare
-    qs = Review.objects.select_related(
+    reviews = Review.objects.select_related(
+    # qs = Review.objects.select_related(
         'appointment__clinic',
         'appointment__specialty',
         'appointment__patient'
     ).order_by('-created_at')
 
+    context = {'reviews': reviews}
     # dacă a fost dat clinic_id în URL, filtrăm
+    # if clinic_id:
+    #     qs = qs.filter(appointment__clinic_id=clinic_id)
+
+    # back_url = request.META.get('HTTP_REFERER', '/services/symptoms/')
+
+    # return render(
+    #     request,
+    #     'reviews/reviews_list.html',
+    #     {
+    #         'reviews': qs,
+    #         'back_url': back_url
+    #     }
+    # )
     if clinic_id:
-        qs = qs.filter(appointment__clinic_id=clinic_id)
+        # validare că există clinica
+        clinic = get_object_or_404(Clinic, id=clinic_id)
+        reviews = reviews.filter(appointment__clinic=clinic)
+        context.update({
+            'reviews': reviews,
+            'current_clinic': clinic
+        })
 
-    back_url = request.META.get('HTTP_REFERER', '/services/symptoms/')
+    # url-ul anterior
+    context['back_url'] = request.META.get('HTTP_REFERER', '/services/symptoms/')
 
-    return render(
-        request,
-        'reviews/reviews_list.html',
-        {
-            'reviews': qs,
-            'back_url': back_url
-        }
-    )
+    return render(request, 'reviews/reviews_list.html', context)
 
 def clinic_list(request):
     # prefetchăm specializările pentru performanță

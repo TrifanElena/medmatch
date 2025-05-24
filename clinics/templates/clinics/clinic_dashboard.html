@@ -85,7 +85,8 @@
 <body class="container mt-5">
     <div class="d-flex gap-3 mb-3">
         <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
-        <a href="{% url 'reviews:list' %}" class="btn btn-outline-primary">Vezi recenziile</a>
+        <!-- <a href="{% url 'reviews:list' %}" class="btn btn-outline-primary">Vezi recenziile</a> -->
+        <a href="{% url 'reviews:reviews_list' %}?clinic_id={{ clinic.id }}" class="btn btn-outline-primary">Vezi recenziile</a>
     </div>
 
     <h1>Dashboard: {{ clinic.name }}</h1>
