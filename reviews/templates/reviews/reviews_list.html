@@ -1,4 +1,167 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Recenzii – MedMatch{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Container padding & background */
+  body {
+  background: rgb(2, 25, 69);
+  background-size: cover;
+}
+  .reviews-container {
+    padding: 2rem 1rem;
+  }
+  /* Fancy back button */
+  .btn-fancy {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem 1.25rem;
+    background-color: rgb(0,107,179);
+    color: #fff;
+    font-weight: bold;
+    font-size: .9rem;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 9999px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+    margin-bottom: 1.5rem;
+  }
+  .btn-fancy::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100px;
+    width: 100px; height: 100%;
+    background: linear-gradient(120deg,
+      rgba(255,255,255,0) 30%,
+      rgba(255,255,255,0.8) 50%,
+      rgba(255,255,255,0) 70%);
+    opacity: .6;
+  }
+  .btn-fancy:hover {
+    transform: scale(1.05);
+    border-color: rgba(255,255,255,0.6);
+  }
+  .btn-fancy:hover::before {
+    animation: shine 1.2s ease-out infinite;
+  }
+  @keyframes shine {
+    from { left: -100px; }
+    to   { left: 100%; }
+  }
+
+  /* Review card styling */
+  .review-card {
+    background: #fff;
+    border-radius: .75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  .review-card h5,
+  .review-card h6 {
+    margin-bottom: .5rem;
+  }
+  .review-card p {
+    margin-bottom: .75rem;
+  }
+  .review-author {
+    font-size: .85rem;
+    color: #6c757d;
+  }
+  .star-rating {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-bottom: .75rem;
+  }
+  .star-rating .filled path {
+    fill: #ff9e0b;  /* stele colorate */
+  }
+  .star-rating .empty path {
+    fill: #ccc;     /* stele necolorate */
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- <div class="text-left">
+    <a href="{{ back_url }}" class="btn-fancy">
+     Înapoi
+    </a>
+    <a href="{% url 'services:home' %}" class="btn-fancy">Acasă</a>
+  </div> -->
+<div class="reviews-container">
+  <h1 style="color:white" class="text-center mb-4">Recenzii ale serviciilor medicale</h1>
+  <div class="text-align right">
+    <a href="{{ back_url }}" class="btn-fancy">
+     Înapoi
+    </a>
+    <a href="{% url 'services:home' %}" class="btn-fancy">Acasă</a>
+  </div>
+  <!-- <div class="text-center">
+    <a href="{{ back_url }}" class="btn-fancy">
+     Înapoi
+    </a>
+  </div> -->
+
+  <!-- {% for review in reviews %}
+    <div class="review-card">
+      <h5><strong>Clinica:</strong> {{ review.appointment.clinic.name }}</h5>
+      <h6><strong>Specializarea:</strong> {{ review.appointment.specialty.name }}</h6>
+      <p><strong>Scor:</strong> {{ review.rating }}/10</p>
+      {% if review.text %}
+        <p>{{ review.text }}</p>
+      {% endif %}
+      {% if not review.anonymous %}
+        <p class="review-author">
+          Recenzie de la: {{ review.appointment.patient.email }}
+        </p>
+      {% endif %}
+    </div>
+  {% empty %}
+    <p class="text-center">Nu există recenzii momentan.</p>
+  {% endfor %} -->
+
+  <div class="row g-4">
+    {% for review in reviews %}
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="review-card h-100">
+          <h5><strong>Clinica:</strong> {{ review.appointment.clinic.name }}</h5>
+          <h6><strong>Specializarea:</strong> {{ review.appointment.specialty.name }}</h6>
+          <p><strong>Scor:</strong> {{ review.rating }}/10</p>
+          {% if review.text %}
+            <p>{{ review.text }}</p>
+          {% endif %}
+          {% if not review.anonymous %}
+            <p class="review-author">Recenzie de la: {{ review.appointment.patient.email }}</p>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p class="text-center">Nu există recenzii momentan.</p>
+      </div>
+    {% endfor %}
+</div>
+<!-- <div class="text-align right">
+    <a href="{{ back_url }}" class="btn-fancy">
+     Înapoi
+    </a>
+    <a href="{% url 'services:home' %}" class="btn-fancy">Acasă</a>
+  </div> -->
+{% endblock %}
+
+<!-- <!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -35,4 +198,4 @@
         <p>Nu există recenzii momentan.</p>
     {% endfor %}
 </body>
-</html>
+</html> -->

@@ -1,0 +1,33 @@
+{
+  "name": "medical-platform",
+  "version": "1.0.0",
+  "description": "ModelMultipleChoiceField = pacientul poate alege mai multe simptome.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tw:init": "tailwindcss init -p",
+    "build:css": "postcss input.css -o static/css/tailwind.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrifanElena/medmatch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TrifanElena/medmatch/issues"
+  },
+  "homepage": "https://github.com/TrifanElena/medmatch#readme",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.7",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.1",
+    "tailwindcss": "^4.1.7"
+  },
+  "dependencies": {
+    "daisyui": "^5.0.37"
+  }
+}

@@ -243,7 +243,7 @@ def get_specialty_from_symptoms(symptoms, age=30, sex="female"):
     evidence = [{"id": s, "choice_id": "present"} for s in filtered]
     body = {
         "sex": sex,
-        "age": {"value": age},
+        "age": {"value": age, "unit": "year"},
         "evidence": evidence
     }
 

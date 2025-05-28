@@ -32,33 +32,95 @@ from django.contrib.auth.decorators import login_required
 #         'form': form,
 #         'appointment': appointment
 #     })
+# @login_required
+# def leave_review(request, appointment_id):
+#     appointment = get_object_or_404(Appointment, id=appointment_id, patient=request.user)
+
+#     if not appointment.fulfilled:
+#         messages.error(request, "Această programare nu este eligibilă pentru recenzie.")
+#         return render(request, 'reviews/leave_review.html', {'appointment': appointment})
+
+#     if request.method == 'POST':
+#         form = ReviewForm(request.POST)
+#         if form.is_valid():
+#             review = form.save(commit=False)
+#             review.appointment = appointment
+#             review.save()
+#             messages.success(request, "Felicitări! Recenzia a fost trimisă! Sperăm că serviciile noastre medicale au fost pe măsura așteptărilor dumneavoastră.")
+#             return render(request, 'reviews/leave_review.html', {
+#                 'form': ReviewForm(),  # formular gol
+#                 'appointment': appointment
+#             })
+#     else:
+#         form = ReviewForm()
+
+#     return render(request, 'reviews/leave_review.html', {
+#         'form': form,
+#         'appointment': appointment
+#     })
 @login_required
 def leave_review(request, appointment_id):
-    appointment = get_object_or_404(Appointment, id=appointment_id, patient=request.user)
+    # 1. Preluăm programarea, validăm user și fulfilled
+    appointment = get_object_or_404(
+        Appointment,
+        id=appointment_id,
+        patient=request.user
+    )
 
     if not appointment.fulfilled:
-        messages.error(request, "Această programare nu este eligibilă pentru recenzie.")
-        return render(request, 'reviews/leave_review.html', {'appointment': appointment})
+        messages.error(
+            request,
+            "Această programare nu este eligibilă pentru recenzie."
+        )
+        return render(request, 'reviews/leave_review.html', {
+            'appointment': appointment
+        })
 
+    # 2. Vedem dacă există deja o recenzie pentru această programare
+    try:
+        existing_review = Review.objects.get(appointment=appointment)
+    except Review.DoesNotExist:
+        existing_review = None
+
+    # 3. Gestionăm GET vs POST
     if request.method == 'POST':
-        form = ReviewForm(request.POST)
+        # dacă există, form va face update; altfel va crea
+        form = ReviewForm(request.POST, instance=existing_review)
         if form.is_valid():
             review = form.save(commit=False)
             review.appointment = appointment
+            review.user = request.user
             review.save()
-            messages.success(request, "Felicitări! Recenzia a fost trimisă! Sperăm că serviciile noastre medicale au fost pe măsura așteptărilor dumneavoastră.")
+
+            # mesaj diferit pentru create/update
+            if existing_review:
+                messages.success(
+                    request,
+                    "Recenzia ta a fost actualizată cu succes."
+                )
+            else:
+                messages.success(
+                    request,
+                    "Felicitări! Recenzia a fost trimisă! "
+                    "Sperăm că serviciile noastre medicale au fost pe măsura așteptărilor tale."
+                )
+
+            # după salvare, putem repopula formularul cu datele existente
+            form = ReviewForm(instance=review)
+
             return render(request, 'reviews/leave_review.html', {
-                'form': ReviewForm(),  # formular gol
+                'form': form,
                 'appointment': appointment
             })
     else:
-        form = ReviewForm()
+        # la GET, dacă există review, precompletăm form cu el
+        form = ReviewForm(instance=existing_review)
 
+    # 4. Renderult final
     return render(request, 'reviews/leave_review.html', {
         'form': form,
         'appointment': appointment
     })
-
 
 # def reviews_list(request):
 #     reviews = Review.objects.select_related('appointment__clinic', 'appointment__specialty', 'appointment__patient').all().order_by('-created_at')
@@ -74,7 +136,7 @@ def leave_review(request, appointment_id):
 #         'back_url': previous_url
 #     })
 
-@login_required
+
 def reviews_list(request):
     clinic_id = request.GET.get('clinic_id')
     # preluăm toate recenziile, împreună cu relațiile necesare

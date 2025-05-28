@@ -1,22 +1,144 @@
-<!-- <!DOCTYPE html>
-<html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <title>Confirmare programare</title>
-</head>
-<body>
-    <h1>Programare înregistrată cu succes!</h1>
-    <p><strong>Clinica:</strong> {{ clinic.name }}</p>
-    <p><strong>Adresă:</strong> {{ clinic.address }}</p>
-    <p><strong>Specialitate:</strong> {{ specialty }}</p>
-    <p><strong>Data:</strong> {{ appointment.date }}</p>
-    <p><strong>Ora:</strong> {{ appointment.time }}</p>
-    <p><strong>Email clinică:</strong> {{ clinic_email }}</p>
+{# appointments/templates/appointments/confirmation.html #}
+{% extends "base.html" %}
+{% load static %}
 
-    <a href="{% url 'services:symptom_checker' %}">Revenire la alegerea simptomelor</a>
-</body>
-</html> -->
-<!DOCTYPE html>
+{% block title %}Confirmare programare – MedMatch{% endblock %}
+
+{% block extra_css %}
+<style>
+      body {
+    background: url("{% static 'images/bg3.jpg' %}") center/cover fixed no-repeat;
+  }
+  .confirmation-card {
+    max-width: 640px;
+    margin: 3rem auto;
+    background: rgba(255,255,255,0.95);
+    padding: 2.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  .confirmation-card h2 {
+    color: var(--color-back);
+    margin-bottom: 1.5rem;
+  }
+  .confirmation-card p {
+    margin-bottom: .75rem;
+    font-size: 1.1rem;    /* text mai mare în card */
+    color: #333;
+  }
+  .confirmation-card hr {
+    margin: 2rem 0;
+    border-color: rgba(0,0,0,0.1);
+  }
+
+  /* Container pentru cele trei butoane egale */
+  .confirmation-card .actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .confirmation-card .actions a {
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Stiluri comune pentru butoane fancy */
+  .btn-fancy,
+  .btn-fancy-navy,
+  .btn-fancy-gray {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1.25rem;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 9999px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+  }
+  .btn-fancy::before,
+  .btn-fancy-navy::before,
+  .btn-fancy-gray::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100px;
+    width: 100px; height: 100%;
+    background: linear-gradient(120deg,
+      rgba(255,255,255,0) 30%,
+      rgba(255,255,255,0.8) 50%,
+      rgba(255,255,255,0) 70%);
+    opacity: 0.6;
+  }
+  .btn-fancy:hover,
+  .btn-fancy-navy:hover,
+  .btn-fancy-gray:hover {
+    transform: scale(1.05);
+    border-color: rgba(255,255,255,0.6);
+  }
+  .btn-fancy:hover::before,
+  .btn-fancy-navy:hover::before,
+  .btn-fancy-gray:hover::before {
+    animation: shine 1.2s ease-out infinite;
+  }
+
+  /* Culori specifice fiecărui buton */
+  .btn-fancy {
+    background-color: rgb(0,107,179);
+  }
+  .btn-fancy-navy {
+    background-color: #001f3f;
+  }
+  .btn-fancy-gray {
+    background-color: #6c757d;
+  }
+
+  @keyframes shine {
+    0%   { left: -100px; }
+    100% { left: 100%; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirmation-card">
+  <h2>Programare Confirmată</h2>
+
+  <p><strong>Clinica:</strong> {{ clinic.name }}</p>
+  <p><strong>Adresă:</strong> {{ clinic.address }}{% if clinic.city %}, {{ clinic.city }}{% endif %}</p>
+  <p><strong>Specialitate:</strong> {{ specialty }}</p>
+  {% if diagnosis %}
+    <p><strong>Diagnostic estimat:</strong> {{ diagnosis }}</p>
+  {% endif %}
+  <p><strong>Data:</strong> {{ appointment.date }}</p>
+  <p><strong>Ora:</strong> {{ appointment.time }}</p>
+  <p><strong>Email clinică:</strong> {{ clinic_email }}</p>
+
+  <hr>
+
+  <div class="actions">
+  
+    <a href="{% url 'services:symptom_checker' %}" class="btn-fancy-navy">
+      Evaluează simptome
+    </a>
+    <a href="{% url 'services:home' %}" class="btn-fancy">
+        Acasă
+      </a>
+    <a href="{% url 'appointments:create' %}?clinic_id={{ appointment.clinic.id }}&specialty_id={{ appointment.specialty.id }}"
+       class="btn-fancy-gray">
+      Programează altă dată
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+
+
+<!-- <!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -58,4 +180,4 @@
 
     </div>
 </body>
-</html>
+</html> -->

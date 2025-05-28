@@ -1,3 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Autentificare – MedMatch{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* background-ul şi card-ul identic cu choose.html */
+  body {
+    background: url("{% static 'images/background.jpg' %}") center/cover fixed no-repeat;
+  }
+  .confirmation-card {
+    max-width: 600px;
+    margin: 2rem auto;
+    background-color: rgba(255,255,255,0.95);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+  .confirmation-card h2 {
+    color: #1c0270;
+    margin-bottom: 1.5rem;
+  }
+  .confirmation-card .btn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .button {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    padding-block: 0.5rem;
+    padding-inline: 1.25rem;
+    background-color: rgb(0 107 179);
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    gap: 10px;
+    font-weight: bold;
+    border: 3px solid #ffffff4d;
+    outline: none;
+    overflow: hidden;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .button:hover {
+    transform: scale(1.05);
+    border-color: #fff9;
+  }
+
+  .button:hover .icon {
+    transform: translateX(4px);
+  }
+
+  .button::before {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100%;
+    background-image: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0) 70%
+    );
+    top: 0;
+    left: -100px;
+    opacity: 0.6;
+  }
+
+  .button:hover::before {
+    animation: shine 1.5s ease-out infinite;
+  }
+
+  @keyframes shine {
+    0%   { left: -100px; }
+    60%  { left: 100%; }
+    to   { left: 100%; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="confirmation-card text-center">
+    <h2>Autentificare pacient</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="button">Autentifică-te</button>
+    </form>
+    <p>Nu ai cont? 
+      <a href="{% url 'users:register' %}">Creează un cont</a>
+    </p>
+    <a href="{% url 'services:home' %}" class="btn btn-outline-secondary mt-3">Înapoi la Acasă</a>
+  </div>
+{% endblock %}
+
 <!-- <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -18,7 +121,7 @@
 </body>
 </html> -->
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ro">
     <head>
         <meta charset="UTF-8">
@@ -52,4 +155,4 @@
     </form>
     <p class="mt-3">Nu ai cont? <a href="{% url 'users:register' %}">Creează un cont</a>.</p>
 </body>
-</html>
+</html> -->

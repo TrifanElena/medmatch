@@ -1,0 +1,91 @@
+/* full‐screen background */
+.choose-page {
+    background: url("../images/background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    min-height: calc(100vh - 56px - 56px); /* adjust if you have navbar/footer */
+    padding: 3rem 0;
+  }
+  
+  /* the white “card” */
+  .choose-card {
+    max-width: 480px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.9);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  
+  /* headings and text */
+  .choose-card h2 {
+    color: #0b2e5a;
+    margin-bottom: 1.5rem;
+  }
+  .choose-card p {
+    color: #444;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+  
+  
+  /* —— “fancy” button from uiverse —— */
+  .btn-fancy {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1.25rem;
+    background-color: rgb(0 107 179);
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.95rem;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 9999px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    margin-top: 1rem;
+  }
+  footer.site-footer .footer-info small a,
+footer.site-footer .footer-info small a:visited {
+  color: #fff !important;
+  text-decoration: underline;
+}
+
+/* → Când dai hover, îl menținem alb și dăm un mic feedback */
+footer.site-footer .footer-info small a:hover {
+  color: #fff !important;
+  opacity: 0.8;
+}
+  
+  .btn-fancy::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100px;
+    width: 100px; height: 100%;
+    background: linear-gradient(120deg,
+      rgba(255,255,255,0) 30%,
+      rgba(255,255,255,0.8) 50%,
+      rgba(255,255,255,0) 70%);
+    opacity: 0.6;
+  }
+  
+  .btn-fancy:hover {
+    transform: scale(1.05);
+    border-color: rgba(255,255,255,0.6);
+  }
+  
+  .btn-fancy:hover::before {
+    animation: shine 1.2s ease-out infinite;
+  }
+  .specialty-box .btn {
+    border-radius: 50px;
+    white-space: nowrap;
+  }
+  
+  @keyframes shine {
+    0%   { left: -100px; }
+    100% { left: 100%; }
+  }
+  

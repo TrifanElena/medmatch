@@ -88,5 +88,6 @@ urlpatterns = [
     path('appointments/', include(('appointments.urls', 'appointments'), namespace='appointments')),
     path('reviews/', include(('reviews.urls', 'reviews'), namespace='reviews')),
     path('', service_views.home, name='home'),  
+     path('accounts/', include('django.contrib.auth.urls')),
 ]
 

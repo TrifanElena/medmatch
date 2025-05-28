@@ -1,4 +1,43 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Alege autentificare – Clinică{% endblock %}
+{% block extra_css %}
+<style>
+body {
+  background: url("{% static 'images/background.jpg' %}") center/cover fixed no-repeat;
+  background-size: cover;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="choose-page">
+  <div class="choose-card">
+    <h2>Bun venit, dragă clinică!</h2>
+    <p>
+      Promovează-ți serviciile medicale pe platforma noastră pentru a atinge categoria
+      de pacienți specifică. Vei primi recenzii verificate care te vor ajuta să îți
+      îmbunătățești calitatea serviciilor medicale!
+    </p>
+
+    <a href="{% url 'clinics:clinic_login' %}" class="btn-fancy">
+     
+      Autentificare
+    </a><br>
+    <a href="{% url 'clinics:clinic_register' %}" class="btn-fancy">
+      
+      Creare cont
+    </a><br>
+    <a href="{% url 'services:home' %}" class="btn btn-secondary mt-2">
+      Înapoi la pagină principală
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+
+<!-- <!DOCTYPE html>
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
@@ -60,4 +99,4 @@
     </a>
   </div>
 </body>
-</html>
+</html> -->

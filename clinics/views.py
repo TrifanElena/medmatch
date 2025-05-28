@@ -73,27 +73,53 @@ def clinic_register(request):
     return render(request, 'clinics/clinic_register.html', {'form': form})
 
 
-def clinic_login(request):
-    form = ClinicLoginForm()
+# def clinic_login(request):
+#     form = ClinicLoginForm()
     
-    if request.method == 'POST':
-        form = ClinicLoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+#     if request.method == 'POST':
+#         form = ClinicLoginForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data['email']
+#             password = form.cleaned_data['password']
 
-            try:
-                clinic = Clinic.objects.get(email=email)
-                if clinic.check_password(password):
-                    request.session['clinic_id'] = clinic.id
-                    return redirect('clinics:clinic_dashboard')
-                else:
-                    messages.error(request, 'Parola este incorectă.')
-            except Clinic.DoesNotExist:
-                messages.error(request, 'Clinica nu există.')
+#             try:
+#                 clinic = Clinic.objects.get(email=email)
+#                 if clinic.check_password(password):
+#                     request.session['clinic_id'] = clinic.id
+#                     return redirect('clinics:clinic_dashboard')
+#                 else:
+#                     messages.error(request, 'Parola este incorectă.')
+#             except Clinic.DoesNotExist:
+#                 messages.error(request, 'Clinica nu există.')
 
+#     return render(request, 'clinics/clinic_login.html', {'form': form})
+def clinic_login(request):
+    form = ClinicLoginForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password']
+
+        # 1) Try to find the clinic
+        try:
+            clinic = Clinic.objects.get(email=email)
+        except Clinic.DoesNotExist:
+            messages.error(request, "Clinica nu există.")
+            # render same login page with error
+            return render(request, 'clinics/clinic_login.html', {'form': form})
+
+        # 2) Check password
+        if not clinic.check_password(password):
+            messages.error(request, "Parola este incorectă.")
+            return render(request, 'clinics/clinic_login.html', {'form': form})
+
+        # 3) Success! log them in via session and clear any old messages
+        request.session['clinic_id'] = clinic.id
+        list(messages.get_messages(request))   # drain old messages
+        return redirect('clinics:clinic_dashboard')
+
+    # GET or non-valid form
     return render(request, 'clinics/clinic_login.html', {'form': form})
-
 
 def clinics_choose(request):
     return render(request, 'clinics/clinics_choose.html')

@@ -11,6 +11,10 @@
 #         widgets = {
 #             'specialties': forms.CheckboxSelectMultiple
 #         }
+
+
+
+
 from django import forms
 from .models import Clinic
 from services.models import MedicalSpecialty
@@ -26,8 +30,26 @@ class ClinicRegistrationForm(forms.ModelForm):
         model = Clinic
         fields = ['name', 'email', 'password', 'address', 'city', 'specialties']
         widgets = {
-            'specialties': forms.CheckboxSelectMultiple
+            'specialties': forms.CheckboxSelectMultiple(attrs={
+                'class': 'btn-check',
+                'autocomplete': 'off',
+            }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # add form-control to all text inputs
+        text_fields = ['name', 'email', 'address', 'city']
+        for f in text_fields:
+            self.fields[f].widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': self.fields[f].label
+            })
+        # password field too
+        self.fields['password'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Parolă'
+        })    
 
     def save(self, commit=True):
         clinic = super().save(commit=False)

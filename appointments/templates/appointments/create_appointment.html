@@ -1,3 +1,142 @@
+{# appointments/templates/appointments/create_appointment.html #}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Creare Programare – MedMatch{% endblock %}
+
+{% block extra_css %}
+<style>
+  body {
+    background: url("{% static 'images/bg2.jpg' %}") no-repeat center center fixed;
+    background-size: cover;
+  }
+  .appointment-container {
+    display: flex; flex-wrap: wrap; gap: 2rem;
+    align-items: flex-start; justify-content: center;
+    margin: 3rem 0;
+  }
+  .confirmation-card {
+    flex: 1 1 340px;
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+  .confirmation-card h2 {
+    color: #198754;
+    margin-bottom: 1.5rem;
+  }
+  .confirmation-card p {
+    margin-bottom: .75rem;
+    font-size: 1rem;
+    color: #333;
+  }
+  .btn-back {
+    background-color: #01213a;
+    color: white;
+    padding: .6rem 1.5rem;
+    border-radius: .5rem;
+    border: none;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  .btn-back:hover { background-color: #001c34; }
+  .btn-submit {
+    background-color: #198754;
+    color: white;
+    padding: .6rem 1.5rem;
+    border-radius: .5rem;
+    border: none;
+    font-weight: bold;
+    width: 100%;
+  }
+  .btn-submit:hover { background-color: #166b49; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="appointment-container">
+  <div class="confirmation-card">
+    <h2>Programează-te la o clinică</h2>
+
+    <p><strong>Clinica:</strong> {{ clinic.name }}</p>
+    <p><strong>Adresă:</strong> {{ clinic.address }}</p>
+
+    <!-- {# — Toggle bar pentru specialități — #}
+    <div class="mb-3 text-start">
+      <p class="form-label fw-bold">Specialitate</p>
+      <div class="btn-group" role="group" aria-label="Specialitate">
+        {% for spec in clinic.specialties.all %}
+          <input type="radio"
+                 class="btn-check"
+                 name="specialty"
+                 id="spec{{ spec.id }}"
+                 value="{{ spec.id }}"
+                 autocomplete="off"
+                 {% if recommended_specialty and recommended_specialty.id == spec.id %}
+                   checked
+                 {% endif %}>
+          <label class="btn btn-outline-primary" for="spec{{ spec.id }}">
+            {{ spec.name }}
+          </label>
+        {% endfor %}
+      </div>
+      {% if form.specialty.errors %}
+        <div class="text-danger small">{{ form.specialty.errors.0 }}</div>
+      {% endif %}
+    </div> -->
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="mb-3 text-start">
+        <p class="form-label fw-bold">Specialitate</p>
+        <div class="btn-group" role="group" aria-label="Specialitate">
+          {% for spec in clinic.specialties.all %}
+            <input type="radio"
+                   class="btn-check"
+                   name="specialty"
+                   id="spec{{ spec.id }}"
+                   value="{{ spec.id }}"
+                   autocomplete="off"
+                   {% if recommended_specialty and recommended_specialty.id == spec.id %}checked{% endif %}>
+            <label class="btn btn-outline-primary" for="spec{{ spec.id }}">
+              {{ spec.name }}
+            </label>
+          {% endfor %}
+        </div>
+        {% if form.specialty.errors %}
+          <div class="text-danger small">{{ form.specialty.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+
+      <div class="mb-3 text-start">
+        <label for="{{ form.date.id_for_label }}" class="form-label">Data</label>
+        {{ form.date }}
+      </div>
+
+      <div class="mb-3 text-start">
+        <label for="{{ form.time.id_for_label }}" class="form-label">Ora</label>
+        {{ form.time }}
+      </div>
+
+      <div class="d-flex justify-content-between gap-2 mt-4">
+        <a href="{% url 'services:recommend_specialty' %}" class="btn-back">
+          Înapoi la recomandare
+        </a>
+        <button type="submit" class="btn-submit">
+          Trimite programarea
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
 <!-- <h2>Programează-te la o clinică</h2>
 <p><a href="{% url 'appointments:create' %}">Programează-te la o clinică</a></p>
 <form method="post">
@@ -28,7 +167,10 @@
     {{ form.as_p }}
     <button type="submit">Trimite programarea</button>
 </form> -->
-<!DOCTYPE html>
+
+
+
+<!-- <!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -62,9 +204,9 @@
 </head>
 <body>
     <div class="confirmation-card">
-    <!-- <a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a> -->
+     <a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a> -->
     
-        <h2 class="mb-4">Programează-te la o clinică</h2>
+        <!-- <h2 class="mb-4">Programează-te la o clinică</h2>
 
 
 <p class="text-center mb-2"><strong>Clinica aleasă:</strong> {{ clinic.name }}</p>
@@ -94,8 +236,7 @@
         {{ form.specialty.label_tag }} {{ form.specialty }}
     </div>
     
-    <!-- <button type="submit" class="btn btn-primary">Trimite programarea</button>
-    <a href="{% url 'services:recommend_specialty' %}" class="btn btn-secondary mt-3">Înapoi la recomandare</a> -->
+
 
     <div class="d-flex justify-content-center gap-3 mt-4">
         <button type="submit" class="btn btn-success">
@@ -108,4 +249,4 @@
 </form>
 </div>
 </body>
-</html>
+</html> --> 

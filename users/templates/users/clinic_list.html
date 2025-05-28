@@ -1,4 +1,125 @@
+{% extends "base.html" %}
 {% load static %}
+
+{% block title %}Clinici disponibile – MedMatch{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Full-page light background */
+  body {
+  background: rgb(2, 25, 69);
+  background-size: cover;
+}
+  /* Container padding */
+  .clinic-list-container {
+    padding: 2rem 1rem;
+  }
+  /* Grid gap */
+  .clinic-row {
+    row-gap: 2rem;
+  }
+  /* Card styling */
+  .clinic-card {
+    transition: transform .2s, box-shadow .2s;
+  }
+  .clinic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  /* Specialty badges */
+  .badge-specialty {
+    margin: .15rem .15rem 0 0;
+    font-size: .8rem;
+  }
+  /* Fancy “Vezi recenzii” button */
+  .btn-fancy {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem 1.25rem;
+    background-color: rgb(0,107,179);
+    color: #fff;
+    font-weight: bold;
+    font-size: .9rem;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 9999px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+  }
+  .btn-fancy::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100px;
+    width: 100px; height: 100%;
+    background: linear-gradient(120deg,
+      rgba(255,255,255,0) 30%,
+      rgba(255,255,255,0.8) 50%,
+      rgba(255,255,255,0) 70%);
+    opacity: .6;
+  }
+  .btn-fancy:hover {
+    transform: scale(1.05);
+    border-color: rgba(255,255,255,0.6);
+  }
+  .btn-fancy:hover::before {
+    animation: shine 1.2s ease-out infinite;
+  }
+  @keyframes shine {
+    from { left: -100px; }
+    to   { left: 100%; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="clinic-list-container">
+  <div class="text-align right">
+    <!-- <a href="{{ back_url }}" class="btn-fancy">
+     Înapoi
+    </a> -->
+    <a href="{% url 'services:symptom_checker' %}" class="btn-fancy">
+      Înapoi
+    </a>
+    <a href="{% url 'services:home' %}" class="btn-fancy">Acasă</a>
+  </div>
+  <h1 style="color:white"class="text-center mb-5">Clinici disponibile</h1>
+  
+  <div class="row row-cols-1 row-cols-md-2 clinic-row">
+    {% for clinic in clinics %}
+      <div class="col">
+        <div class="card clinic-card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ clinic.name }}</h5>
+            <p class="card-text mb-2">
+              <strong>Adresă:</strong>
+              {{ clinic.address }}{% if clinic.city %}, {{ clinic.city }}{% endif %}
+            </p>
+            {% if clinic.specialties.exists %}
+              <div class="mb-3">
+                {% for spec in clinic.specialties.all %}
+                  <span class="badge bg-primary badge-specialty">{{ spec.name }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <div class="mt-auto text-end">
+              <a href="{% url 'reviews:reviews_list' %}?clinic_id={{ clinic.id }}"
+                 class="btn-fancy">
+                Vezi recenzii
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center">Nu există clinici de afișat.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+<!-- {% load static %}
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -42,4 +163,4 @@
     {% endfor %}
   </div>
 </body>
-</html>
+</html> -->

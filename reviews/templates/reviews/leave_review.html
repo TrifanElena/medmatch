@@ -1,4 +1,196 @@
-<!-- leave_review.html -->
+{# reviews/templates/reviews/leave_review.html #}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Lasă o recenzie – MedMatch{% endblock %}
+
+{% block extra_css %}
+<style>
+  .confirmation-card {
+    max-width: 640px;
+    margin: 3rem auto;
+    background: rgba(255,255,255,0.95);
+    padding: 2.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+  .confirmation-card h2 {
+    color: var(--color-back);
+    margin-bottom: 1.5rem;
+  }
+  .confirmation-card p.intro {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Star rating (10 stele) */
+  .radio {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    /* adaugi jos linia nouă: */
+    flex-direction: row-reverse;
+  }
+  .radio > input {
+    position: absolute;
+    appearance: none;
+  }
+  .radio > label {
+    cursor: pointer;
+    font-size: 24px;
+    position: relative;
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+  .radio > label > svg {
+    fill: #666;
+    transition: fill 0.2s ease;
+  }
+  .radio > label:hover,
+  .radio > label:hover ~ label {
+    transform: scale(1.1);
+  }
+  .radio > input:checked + label > svg,
+  .radio > input:checked + label ~ label > svg {
+    fill: #ff9e0b;
+    filter: drop-shadow(0 0 8px rgba(255,158,11,0.8));
+  }
+
+  /* Optional hover animations */
+  .radio > label:hover > svg {
+    fill: #ff9e0b;
+    filter: drop-shadow(0 0 12px rgba(255,158,11,0.8));
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirmation-card text-center">
+  <h2>Lasă o recenzie pentru {{ appointment.clinic.name }} – {{ appointment.specialty.name }}</h2>
+  <p class="intro">
+    Recenziile tale ne ajută să ne îmbunătățim serviciile medicale.<br>
+    Te rugăm să fii sincer și politicos în exprimare.
+  </p>
+
+  {# Rating cu 10 stele #}
+  <div class="radio">
+    <input type="radio" id="star10" name="rating" value="10">
+    <label for="star10">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star9" name="rating" value="9">
+    <label for="star9">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star8" name="rating" value="8">
+    <label for="star8">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star7" name="rating" value="7">
+    <label for="star7">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star6" name="rating" value="6">
+    <label for="star6">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star5" name="rating" value="5">
+    <label for="star5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star4" name="rating" value="4">
+    <label for="star4">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star3" name="rating" value="3">
+    <label for="star3">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star2" name="rating" value="2">
+    <label for="star2">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+
+    <input type="radio" id="star1" name="rating" value="1">
+    <label for="star1">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+      </svg>
+    </label>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    
+
+    <!-- {# Textul recenziei #}
+
+    <div class="mb-4 text-start">
+        {{ form.review_text.label_tag }}
+        {{ form.review_text }}
+        {{ form.review_text.errors }}
+      </div>
+
+    {# Checkbox pentru anonimitate #}
+    <div class="form-check mb-4 text-start">
+      <input class="form-check-input" type="checkbox" id="id_anonymous" name="anonymous">
+      <label class="form-check-label" for="id_anonymous">
+        Trimite anonim
+      </label>
+    </div> -->
+
+    {# Butoane #}
+    <div class="d-flex justify-content-center gap-3">
+      <button type="submit" class="btn btn-success">
+        <span class="text">Trimite recenzia</span>
+      </button>
+      <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">
+        Vezi recenzii
+      </a>
+    </div>
+
+    {% if messages %}
+      <div class="alert alert-success mt-3">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}
+
+<!-- 
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -57,7 +249,6 @@
 <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">Vezi recenzii</a>
 </div>
     </form>
-    <!-- <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">Vezi recenzii</a> -->
 </div>
 </body>
-</html>
+</html> -->

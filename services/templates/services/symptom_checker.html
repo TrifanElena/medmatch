@@ -1,142 +1,125 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Symptom checker</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <style>
-            body {
-                background-color: #f8f9fa;
-                margin-top: 40px;
-            }
-            .confirmation-card {
-                max-width: 600px;
-                margin: 0 auto;
-                background-color: white;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            }
-            h2 {
-                color: #1c0270;
-            }
-        </style>
-        <style>
-            .btn-recommend {
-                background-color: #198754;
-                color: white;
-                font-size: 1.2rem;
-                padding: 10px 20px;
-                border-radius: 8px;
-                border: none;
-                margin-top: 20px;
-            }
-        
-            .symptom-columns {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 10px 40px;
-                max-width: 600px;
-            }
-        </style>
-        
-    </head>
-<body>
-    <a href="{% url 'services:home' %}" class="btn btn-secondary mb-3">Acasă</a>
-    <a href="{% url 'users:clinic_list' %}" class="btn btn-outline-primary mb-3">Vezi toate clinicile</a>
+{% extends "base.html" %}
+{% load static %}
 
+{% block title %}Verificare simptome – MedMatch{% endblock %}
 
-    <h1>Verifica simptomele</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div class="symptom-columns">
-            {% for field in form %}
-                <div class="form-check">
-                    {{ field }}
-                    <label class="form-check-label" for="{{ field.id_for_label }}">
-                        {{ field.label }}
-                    </label>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="mt-3 d-flex gap-2">
-            <button type="submit" class="btn btn-success">Primește o recomandare</button>
-        </div>
-    </form>
-    
-    
-</body>
-</html> -->
+{% block extra_css %}
+<style>
+:root { --color-back: #2a9d8f; }
+body {
+    background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+    background-size: cover;
+  }
+.symptom-form-container {
+  background: rgba(255,255,255,0.9);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
 
-<!DOCTYPE html>
-<html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <title>Verificare simptome</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        .symptom-columns {
-            column-count: 2;
-            column-gap: 40px;
-        }
-        .form-check {
-            break-inside: avoid;
-        }
-        .btn-group-custom {
-            margin-top: 30px;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .disclaimer-box {
-            background-color: #ffffff;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            font-size: 0.9rem;
-            color: #555;
-        }
-    </style>
-</head>
-<body class="container mt-5">
-    <div class="mb-4">
-        <p class="mb-4"><h1>Bună, {{ user.full_name }}!</h1></p>
-        <p class="text-muted mb-0">
-            Selectează din lista de mai jos unul sau mai multe simptome  
-            și noi vom încerca să îți dăm un diagnostic probabil.
-        </p>
+.symptom-columns {
+  column-count: 2;
+  column-gap: 2rem;
+}
+.form-check { break-inside: avoid; margin-bottom: .5rem; }
+
+.disclaimer-box {
+  background: #fff;
+  padding: 1rem;
+  border-radius: .75rem;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+/* your fancy “big button” */
+.button {
+  background: var(--color-back);
+  border-radius: .5em;
+  box-shadow:
+    inset 0 -6px 18px -6px rgba(3,15,20,0),
+    inset 54px 69px 75px rgba(54,69,75,1),
+    rgba(54,69,75,1) -1px -1px 6px;
+  border: 2px solid #030f14;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: .7em 1.7em;
+  transition: all .3s;
+  color: #fff;
+}
+.button:hover {
+  box-shadow:
+    inset 0 -6px 18px -6px rgba(3,15,20,1),
+    -1px -1px 6px rgba(54,69,75,1);
+}
+.button:active {
+  box-shadow:
+    inset 0 -12px 12px -6px rgba(3,15,20,1),
+    -1px -1px 6px rgba(54,69,75,1);
+}
+.button .text {
+  display: inline-block;
+  font-weight: 700;
+  transition: transform .3s;
+}
+.button:hover .text { transform: scale(.9); }
+.button:active .text { transform: scale(.8); }
+
+/* the smaller links */
+.btn-group-custom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: .75rem;
+}
+.btn-group-custom .btn {
+  flex: 1 1 auto;
+  min-width: 120px;
+  font-size: 1.1rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="symptom-form-container">
+  <form method="post" action="{% url 'services:symptom_checker' %}">
+    {% csrf_token %}
+    <div class="btn-group-custom">
+      <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
+      <a href="{% url 'appointments:my_appointments' %}" class="btn btn-outline-primary">Programările mele</a>
+      <a href="{% url 'users:clinic_list' %}" class="btn btn-outline-info">Clinici</a>
+      <a href="{% url 'reviews:list' %}" class="btn btn-outline-success">Recenzii</a>
+      <a href="{% url 'users:logout' %}" class="btn btn-outline-danger">Deloghează-mă</a>
+      <button type="submit" class="button">
+        <span class="text">Primește o recomandare</span>
+      </button>
     </div>
+
+    <header class="mb-4">
+      <h1 style="color:#2a9d8f">Bună, {{ user.full_name }}!</h1>
+      <p class="text-muted">
+        Alege unul sau mai multe simptome și primește un diagnostic probabil.
+      </p>
+    </header>
+
+    <div class="symptom-columns">
+      {% for field in form.symptoms %}
+        <div class="form-check">
+          {{ field.tag }}
+          <label class="form-check-label" for="{{ field.id_for_label }}">
+            {{ field.choice_label }}
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+
     <div class="disclaimer-box">
-        <strong>Disclaimer:</strong>  
-        Recomandările medicale și diagnosticile generate de aplicație  
-        nu sunt 100% precise și reflectă marja de eroare a API-ului Infermedica.  
-        Te rugăm să consulți întotdeauna un medic specialist înainte  
-        de a lua decizii importante legate de sănătatea ta.
+      <strong>Disclaimer:</strong>
+      Recomandările medicale și diagnosticile generate de aplicație  
+      nu sunt 100% precise și reflectă marja de eroare a API-ului Infermedica.  
+      Te rugăm să consulți întotdeauna un medic specialist înainte  
+      de a lua decizii importante legate de sănătatea ta.
     </div>
-    <h4 class="mb-4">Verifică simptomele</h4>
-
-    <form method="post">
-        {% csrf_token %}
-        <div class="row">
-          {% for field in form.symptoms %}
-            <div class="col-6 form-check">
-              {{ field }} 
-              <label class="form-check-label" for="{{ field.id_for_label }}">
-                {{ field.label }}
-              </label>
-            </div>
-          {% endfor %}
-        </div>
-        <div class="btn-group-custom">
-            <a href="{% url 'services:home' %}" class="btn btn-secondary">Acasă</a>
-            <a href="{% url 'appointments:my_appointments' %}" class="btn btn-outline-primary">Vezi programările</a>
-            <a href="{% url 'users:clinic_list' %}" class="btn btn-outline-primary">Vezi toate clinicile</a>
-            <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">Vezi recenzii</a>
-            <a href="{% url 'users:logout' %}" class="btn btn-primary"style="background-color:#0d3b66; border-color:#0d3b66;">Deloghează-mă</a>
-            <button type="submit" class="btn btn-success">Primește o recomandare</button>
-        </div>
-      </form>
-      
-</body>
-</html>
-
+  </form>
+</div>
+{% endblock %}
