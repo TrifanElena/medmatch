@@ -6,6 +6,10 @@
 
 {% block extra_css %}
 <style>
+  body {
+    background: url("{% static 'images/leave_review_bg.png' %}") no-repeat center center fixed;
+    background-size: cover;
+  }
   .confirmation-card {
     max-width: 640px;
     margin: 3rem auto;
@@ -25,43 +29,44 @@
   }
 
   /* Star rating (10 stele) */
-  .radio {
+  .star-rating {
     display: flex;
     justify-content: center;
     gap: 6px;
     margin-bottom: 1.5rem;
-    /* adaugi jos linia nouă: */
-    flex-direction: row-reverse;
+    flex-direction: row-reverse;  /* păstrăm ca să apară 1→10 vizual */
   }
-  .radio > input {
+  .star-rating input {
     position: absolute;
     appearance: none;
   }
-  .radio > label {
+  .star-rating label {
     cursor: pointer;
     font-size: 24px;
-    position: relative;
     display: inline-block;
     transition: transform 0.2s ease;
   }
-  .radio > label > svg {
+  .star-rating label svg {
     fill: #666;
     transition: fill 0.2s ease;
   }
-  .radio > label:hover,
-  .radio > label:hover ~ label {
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
     transform: scale(1.1);
   }
-  .radio > input:checked + label > svg,
-  .radio > input:checked + label ~ label > svg {
+  .star-rating input:checked + label svg,
+  .star-rating input:checked + label ~ label svg {
     fill: #ff9e0b;
     filter: drop-shadow(0 0 8px rgba(255,158,11,0.8));
   }
-
-  /* Optional hover animations */
-  .radio > label:hover > svg {
+  .star-rating label:hover svg {
     fill: #ff9e0b;
     filter: drop-shadow(0 0 12px rgba(255,158,11,0.8));
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
   }
 </style>
 {% endblock %}
@@ -74,105 +79,119 @@
     Te rugăm să fii sincer și politicos în exprimare.
   </p>
 
-  {# Rating cu 10 stele #}
-  <div class="radio">
-    <input type="radio" id="star10" name="rating" value="10">
-    <label for="star10">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star9" name="rating" value="9">
-    <label for="star9">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star8" name="rating" value="8">
-    <label for="star8">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star7" name="rating" value="7">
-    <label for="star7">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star6" name="rating" value="6">
-    <label for="star6">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star5" name="rating" value="5">
-    <label for="star5">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star4" name="rating" value="4">
-    <label for="star4">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star3" name="rating" value="3">
-    <label for="star3">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star2" name="rating" value="2">
-    <label for="star2">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-
-    <input type="radio" id="star1" name="rating" value="1">
-    <label for="star1">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
-      </svg>
-    </label>
-  </div>
-
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
 
-    
+    {# 1) Rating 1–10 fără text suplimentar #}
+    <div class="form-group">
+      <div class="star-rating">
+        <!-- HTML inversat: 10→1 -->
+        <input type="radio" id="star10" name="rating" value="10"
+               {% if form.rating.value|stringformat:"s" == "10" %}checked{% endif %}>
+        <label for="star10">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
 
-    <!-- {# Textul recenziei #}
+        <input type="radio" id="star9" name="rating" value="9"
+               {% if form.rating.value|stringformat:"s" == "9" %}checked{% endif %}>
+        <label for="star9">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
 
-    <div class="mb-4 text-start">
-        {{ form.review_text.label_tag }}
-        {{ form.review_text }}
-        {{ form.review_text.errors }}
+        <input type="radio" id="star8" name="rating" value="8"
+               {% if form.rating.value|stringformat:"s" == "8" %}checked{% endif %}>
+        <label for="star8">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
+
+        <input type="radio" id="star7" name="rating" value="7"
+               {% if form.rating.value|stringformat:"s" == "7" %}checked{% endif %}>
+        <label for="star7">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
+
+        <input type="radio" id="star6" name="rating" value="6"
+               {% if form.rating.value|stringformat:"s" == "6" %}checked{% endif %}>
+        <label for="star6">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
+
+        <input type="radio" id="star5" name="rating" value="5"
+               {% if form.rating.value|stringformat:"s" == "5" %}checked{% endif %}>
+        <label for="star5">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
+
+        <input type="radio" id="star4" name="rating" value="4"
+               {% if form.rating.value|stringformat:"s" == "4" %}checked{% endif %}>
+        <label for="star4">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
+
+        <input type="radio" id="star3" name="rating" value="3"
+               {% if form.rating.value|stringformat:"s" == "3" %}checked{% endif %}>
+        <label for="star3">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
+
+        <input type="radio" id="star2" name="rating" value="2"
+               {% if form.rating.value|stringformat:"s" == "2" %}checked{% endif %}>
+        <label for="star2">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
+
+        <input type="radio" id="star1" name="rating" value="1"
+               {% if form.rating.value|stringformat:"s" == "1" %}checked{% endif %}>
+        <label for="star1">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 .587l3.668 7.431l8.207 1.193l-5.937 5.789l1.402 8.178L12 18.902l-7.34 3.866l1.402-8.178L.124 9.211l8.207-1.193z"/>
+          </svg>
+        </label>
       </div>
+      {% if form.rating.errors %}
+        <div class="text-danger">{{ form.rating.errors.0 }}</div>
+      {% endif %}
+    </div>
 
-    {# Checkbox pentru anonimitate #}
-    <div class="form-check mb-4 text-start">
-      <input class="form-check-input" type="checkbox" id="id_anonymous" name="anonymous">
-      <label class="form-check-label" for="id_anonymous">
-        Trimite anonim
-      </label>
-    </div> -->
+    {# 2) Comentariu #}
+    <div class="form-group">
+      {{ form.text.label_tag }}
+      {{ form.text }}
+      {% if form.text.errors %}
+        <div class="text-danger">{{ form.text.errors.0 }}</div>
+      {% endif %}
+    </div>
 
-    {# Butoane #}
+    {# 3) Checkbox anonim #}
+    <div class="form-group">
+      {{ form.anonymous }} {{ form.anonymous.label_tag }}
+      {% if form.anonymous.errors %}
+        <div class="text-danger">{{ form.anonymous.errors.0 }}</div>
+      {% endif %}
+    </div>
+
+    {# 4) Butoane și mesaje #}
     <div class="d-flex justify-content-center gap-3">
       <button type="submit" class="btn btn-success">
-        <span class="text">Trimite recenzia</span>
+        Trimite recenzia
       </button>
       <a href="{% url 'reviews:list' %}" class="btn btn-outline-info">
         Vezi recenzii
@@ -189,6 +208,8 @@
   </form>
 </div>
 {% endblock %}
+
+
 
 <!-- 
 <!DOCTYPE html>

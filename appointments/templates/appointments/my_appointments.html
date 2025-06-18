@@ -71,7 +71,7 @@
 
   /* tighten up table inside */
   .appointments-card .table {
-    margin-top: 5rem;
+    margin-top: 1rem;
   }
 </style>
 {% endblock %}
@@ -101,7 +101,18 @@
         <tbody>
           {% for appt in appointments %}
             <tr class="{% if appt.fulfilled %}table-success{% elif appt.date < today %}table-danger{% endif %}">
-              <td>{{ appt.clinic.name }}</td>
+              <!-- Coloana Clinica + E-mail -->
+              <td>
+                {{ appt.clinic.name }}
+                {% if appt.clinic.email %}
+                  <br>
+                  <small>
+                    <a href="mailto:{{ appt.clinic.email }}">{{ appt.clinic.email }}</a>
+                  </small>
+                {% endif %}
+              </td>
+        
+              <!-- Restul coloanelor neschimbate -->
               <td>{{ appt.clinic.city }}</td>
               <td>{{ appt.specialty.name }}</td>
               <td>{{ appt.date }}</td>
