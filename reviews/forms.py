@@ -15,7 +15,7 @@ class ReviewForm(forms.ModelForm):
     rating = forms.IntegerField(
         min_value=1,
         max_value=10,
-        label=""  # lăsăm gol, ca să nu mai apară "Evaluează calitatea generală..."
+        label="" 
     )
 
     class Meta:

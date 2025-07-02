@@ -99,8 +99,6 @@ def clinic_login(request):
     if request.method == 'POST' and form.is_valid():
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-
-        # 1) Try to find the clinic
         try:
             clinic = Clinic.objects.get(email=email)
         except Clinic.DoesNotExist:
@@ -108,14 +106,12 @@ def clinic_login(request):
             # render same login page with error
             return render(request, 'clinics/clinic_login.html', {'form': form})
 
-        # 2) Check password
         if not clinic.check_password(password):
             messages.error(request, "Parola este incorectă.")
             return render(request, 'clinics/clinic_login.html', {'form': form})
 
-        # 3) Success! log them in via session and clear any old messages
         request.session['clinic_id'] = clinic.id
-        list(messages.get_messages(request))   # drain old messages
+        list(messages.get_messages(request))   
         return redirect('clinics:clinic_dashboard')
 
     # GET or non-valid form
@@ -137,7 +133,6 @@ def clinic_dashboard(request):
         if 'appointment_id' in request.POST:
             appointment_id = request.POST.get('appointment_id')
             fulfilled = request.POST.get('fulfilled') == 'on'
-            # appointment = Appointment.objects.get(id=appointment_id)
             appointment = get_object_or_404(Appointment, id=appointment_id)
             appointment.fulfilled = fulfilled
             appointment.save()

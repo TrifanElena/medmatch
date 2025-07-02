@@ -15,6 +15,17 @@
   <link rel="stylesheet" href="{% static 'css/custom.css' %}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- <script src="logoutHandler.js"></script> -->
+  <script>
+     function handleLogout() {
+  // Delete 'csrftoken' cookie by setting its expiry date in the past
+  document.cookie = 'csrftoken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+
+  // Delete 'sessionid' cookie similarly
+  document.cookie = 'sessionid=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+}
+
+   </script>
 </head>
 <body>
 
@@ -50,7 +61,7 @@
                 {{ user.get_username }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
-                <li><a class="dropdown-item" href="{% url 'clinics:clinic_login' %}">Logout</a></li>
+                <li><a class="dropdown-item" onclick="handleLogout()" href="{% url 'users:logout' %}">Logout</a></li>
               </ul>
             </li>
           {% else %}

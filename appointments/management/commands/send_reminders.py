@@ -1,3 +1,4 @@
+#appointments/management/commands/send_reminders.py
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from datetime import timedelta

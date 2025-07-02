@@ -47,17 +47,6 @@
     text-decoration: none;
     margin-top: 1rem;
   }
-  footer.site-footer .footer-info small a,
-footer.site-footer .footer-info small a:visited {
-  color: #fff !important;
-  text-decoration: underline;
-}
-
-/* → Când dai hover, îl menținem alb și dăm un mic feedback */
-footer.site-footer .footer-info small a:hover {
-  color: #fff !important;
-  opacity: 0.8;
-}
   
   .btn-fancy::before {
     content: "";

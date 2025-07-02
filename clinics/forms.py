@@ -38,14 +38,12 @@ class ClinicRegistrationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # add form-control to all text inputs
         text_fields = ['name', 'email', 'address', 'city']
         for f in text_fields:
             self.fields[f].widget.attrs.update({
                 'class': 'form-control',
                 'placeholder': self.fields[f].label
             })
-        # password field too
         self.fields['password'].widget.attrs.update({
             'class': 'form-control',
             'placeholder': 'Parolă'

@@ -86,6 +86,10 @@
     });
   });
 
+  function logout() {
+    console.log("Logout function called");
+  }
+
   window.addEventListener('load', toggleScrollTop);
   document.addEventListener('scroll', toggleScrollTop);
 

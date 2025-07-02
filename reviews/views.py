@@ -60,7 +60,6 @@ from django.contrib.auth.decorators import login_required
 #     })
 @login_required
 def leave_review(request, appointment_id):
-    # 1. Preluăm programarea, validăm user și fulfilled
     appointment = get_object_or_404(
         Appointment,
         id=appointment_id,
@@ -75,24 +74,20 @@ def leave_review(request, appointment_id):
         return render(request, 'reviews/leave_review.html', {
             'appointment': appointment
         })
-
-    # 2. Vedem dacă există deja o recenzie pentru această programare
     try:
         existing_review = Review.objects.get(appointment=appointment)
     except Review.DoesNotExist:
         existing_review = None
 
-    # 3. Gestionăm GET vs POST
+   
     if request.method == 'POST':
-        # dacă există, form va face update; altfel va crea
+       
         form = ReviewForm(request.POST, instance=existing_review)
         if form.is_valid():
             review = form.save(commit=False)
             review.appointment = appointment
             review.user = request.user
             review.save()
-
-            # mesaj diferit pentru create/update
             if existing_review:
                 messages.success(
                     request,
@@ -104,8 +99,6 @@ def leave_review(request, appointment_id):
                     "Felicitări! Recenzia a fost trimisă! "
                     "Sperăm că serviciile noastre medicale au fost pe măsura așteptărilor tale."
                 )
-
-            # după salvare, putem repopula formularul cu datele existente
             form = ReviewForm(instance=review)
 
             return render(request, 'reviews/leave_review.html', {
@@ -148,20 +141,7 @@ def reviews_list(request):
     ).order_by('-created_at')
 
     context = {'reviews': reviews}
-    # dacă a fost dat clinic_id în URL, filtrăm
-    # if clinic_id:
-    #     qs = qs.filter(appointment__clinic_id=clinic_id)
 
-    # back_url = request.META.get('HTTP_REFERER', '/services/symptoms/')
-
-    # return render(
-    #     request,
-    #     'reviews/reviews_list.html',
-    #     {
-    #         'reviews': qs,
-    #         'back_url': back_url
-    #     }
-    # )
     if clinic_id:
         # validare că există clinica
         clinic = get_object_or_404(Clinic, id=clinic_id)
@@ -171,7 +151,6 @@ def reviews_list(request):
             'current_clinic': clinic
         })
 
-    # url-ul anterior
     context['back_url'] = request.META.get('HTTP_REFERER', '/services/symptoms/')
 
     return render(request, 'reviews/reviews_list.html', context)
